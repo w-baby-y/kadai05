@@ -5,7 +5,7 @@ let randomStation = "";
 let stationLat = "";
 let StationLon = "";
 let clickCount = 0;
-let gamePoint = 1000;
+let gamePoint = 1010;
 let firstPoint = 0;
 let secondPoint = 0;
 let thirdPoint = 0;
@@ -24,7 +24,7 @@ $("#guess").on("click", function () {
     $("#first-point").append(firstPoint);
     console.log(firstPoint, "1回目のポイント");
     $("#answer").text("答え：" + prefData);
-    gamePoint = 1000; //ゲームポイントを初期化
+    gamePoint = 1010; //ゲームポイントを初期化
     clickCount = 0;
     game();
   } else if (gameCount === 2) {
@@ -32,7 +32,7 @@ $("#guess").on("click", function () {
     $("#second-point").append(secondPoint);
     console.log(secondPoint, "2回目のポイント");
     $("#answer").text("答え：" + prefData);
-    gamePoint = 1000; //ゲームポイントを初期化
+    gamePoint = 1010; //ゲームポイントを初期化
     clickCount = 0;
     game();
   } else {
