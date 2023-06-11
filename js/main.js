@@ -122,7 +122,7 @@ function game() {
       // APIのエンドポイントURL
       x = stationLon; //lon x
       y = stationLat; //lat y
-      const url = `http://geoapi.heartrails.com/api/json?method=searchByGeoLocation&x=${x}&y=${y}`;
+      const url = `https://geoapi.heartrails.com/api/json?method=searchByGeoLocation&x=${x}&y=${y}`;
       //http://geoapi.heartrails.com/api.html#geolocation
       // fetch APIを使用してデータを取得
       fetch(url)
