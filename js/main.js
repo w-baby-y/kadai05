@@ -3,7 +3,7 @@
 /////////////////////////////////
 let randomStation = "";
 let stationLat = "";
-let StationLon = "";
+let stationLon = "";
 let clickCount = 0;
 let gamePoint = 1010;
 let firstPoint = 0;
@@ -12,6 +12,37 @@ let thirdPoint = 0;
 let totalPoint = 0;
 let gameCount = 0;
 let prefData = "";
+
+/////////////////////////////////
+//firebase
+/////////////////////////////////
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+import {
+  getDatabase,
+  ref,
+  onValue,
+  push,
+  set,
+  onChildAdded,
+  remove,
+  onChildRemoved,
+} from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAHlqLKoP4mCw4mPmQfbTX2pnrECtA7mM8",
+  authDomain: "guess-8628b.firebaseapp.com",
+  projectId: "guess-8628b",
+  storageBucket: "guess-8628b.appspot.com",
+  messagingSenderId: "264478165100",
+  appId: "1:264478165100:web:e004bd529617b53be03049",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app); //RealtimeDBに接続
+const dbRef = ref(db, "users");
 
 /////////////////////////////////
 //初期実行
@@ -46,8 +77,70 @@ $("#guess").on("click", function () {
     $("#third-point").append(thirdPoint);
     console.log(thirdPoint, "3回目のポイント");
     $("#answer").text("答え：" + prefData);
+
+    //合計点数の処理＋firebaseに登録
+    totalPoint = firstPoint + secondPoint + thirdPoint;
+    const point = {
+      user: $("#username").val(),
+      fp: firstPoint,
+      sp: secondPoint,
+      tp: thirdPoint,
+      totalp: totalPoint,
+    };
+    const newPostRef = push(dbRef);
+    set(newPostRef, point);
+    $(".modal, .over-lay").addClass("active");
+    $("#modal-point").text(totalPoint);
   }
 });
+/////////////////////////////////
+//再挑戦ボタン
+/////////////////////////////////
+$(".modal-close-btn").on("click", function () {
+  location.reload(); // ページを更新する
+});
+
+/////////////////////////////////
+//firebaseからランキング抽出
+/////////////////////////////////
+// データを取得します
+
+onValue(
+  dbRef,
+  (snapshot) => {
+    let data = snapshot.val();
+    let maxUser = null;
+    let maxTotal = null;
+    let maxFirst = null;
+    let maxSecond = null;
+    let maxThird = null;
+
+    // データからtotalpが最大のユーザーを見つけます
+    for (var key in data) {
+      if (data.hasOwnProperty(key)) {
+        var user = data[key];
+        if (maxTotal === null || user.totalp > maxTotal) {
+          maxUser = user;
+          maxTotal = user.totalp;
+          maxFirst = user.fp;
+          maxSecond = user.sp;
+          maxThird = user.tp;
+        }
+      }
+    }
+
+    // jQueryを使ってHTMLに表示します
+    $("#user").text(maxUser.user);
+    $("#ranking-first-point").text(maxFirst);
+    $("#ranking-second-point").text(maxSecond);
+    $("#ranking-third-point").text(maxThird);
+    $("#ranking-total-point").text(maxTotal);
+  },
+  {
+    onlyOnce: true,
+  }
+);
+// https://firebase.google.com/docs/database/web/read-and-write?hl=ja
 
 /////////////////////////////////
 //再抽選
@@ -85,13 +178,13 @@ function game() {
     .then((response) => response.json())
     .then((data) => {
       console.log(data, "駅データ");
-      randomIndex = Math.floor(Math.random() * data.length);
+      let randomIndex = Math.floor(Math.random() * data.length);
       // console.log(randomIndex, "ランダム");
       randomStation = data[randomIndex].station_name;
       stationLat = data[randomIndex].lat;
       stationLon = data[randomIndex].lon;
-      stationLatRound = Math.round(stationLat * 1000) / 1000; //詳細すぎるとストリートビューに反映されないので小数点４桁まで
-      stationLonRound = Math.round(stationLon * 1000) / 1000;
+      let stationLatRound = Math.round(stationLat * 1000) / 1000; //詳細すぎるとストリートビューに反映されないので小数点４桁まで
+      let stationLonRound = Math.round(stationLon * 1000) / 1000;
 
       console.log(
         randomStation + " lat=" + stationLat + " lon=" + stationLon,
@@ -135,8 +228,8 @@ function game() {
       //緯度経度からどの都道府県か導き出すAPI
       /////////////////////////////////
       // APIのエンドポイントURL
-      x = stationLon; //lon x
-      y = stationLat; //lat y
+      let x = stationLon; //lon x
+      let y = stationLat; //lat y
       const url = `https://geoapi.heartrails.com/api/json?method=searchByGeoLocation&x=${x}&y=${y}`;
       //http://geoapi.heartrails.com/api.html#geolocation
       // fetch APIを使用してデータを取得

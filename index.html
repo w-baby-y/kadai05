@@ -9,7 +9,8 @@
   <body>
     <div id="map"></div>
     <div id="user-container">
-      <span>ユーザー名：</span><input type="text" />
+      <span>ユーザー名：</span
+      ><input id="username" type="text" value="ジオくん" />
     </div>
     <div id="answer-container">
       <select id="pref">
@@ -67,14 +68,39 @@
     </div>
     <div id="points-container">
       <span id="answer">答え：</span>
-      <div id="first-point">1回目のポイント：</div>
-      <div id="second-point">2回目のポイント：</div>
-      <div id="third-point">3回目のポイント：</div>
+      <div id="first-point">ファーストポイント：</div>
+      <div id="second-point">セカンドポイント：</div>
+      <div id="third-point">サードポイント：</div>
+    </div>
+    <div id="ranking-container">
+      <div id="ranking">
+        <span>オンラインランキング1位</span>
+        <p>ユーザー名: <span id="user"></span></p>
+        <span>ファーストポイント: <span id="ranking-first-point"></span></span
+        ><br />
+        <span>セカンドポイント: <span id="ranking-second-point"></span></span
+        ><br />
+        <span>サードポイント: <span id="ranking-third-point"></span></span
+        ><br />
+        <p>トータルポイント: <span id="ranking-total-point"></span></p>
+      </div>
+    </div>
+
+    <!-- モーダルを開いた時の外側のレイヤー -->
+    <div class="over-lay"></div>
+
+    <div class="wrapper">
+      　<!--   モーダルウィンドウ -->
+      <div class="modal">
+        <p>あなたの点数は</p>
+        <h2><span id="modal-point"></span>点です！</h2>
+        <button class="modal-close-btn">再挑戦</button>
+      </div>
     </div>
   </body>
 
   <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
   <script src="https://maps.google.com/maps/api/js?key=AIzaSyCwjwltaoAT-PbUiB1VyDzNfcP6TYUw1_s&language=ja"></script>
   <!-- https://qiita.com/Haruka-Ogawa/items/997401a2edcd20e61037 -->
-  <script src="js/main.js"></script>
+  <script type="module" src="js/main.js"></script>
 </html>

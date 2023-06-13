@@ -3,6 +3,9 @@ html {
 }
 body {
   height: 100%;
+  font-family: Verdana, Roboto, "Droid Sans", "游ゴシック", YuGothic, "メイリオ",
+    Meiryo, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN",
+    "ＭＳ Ｐゴシック", sans-serif;
 }
 #map {
   height: 70%;
@@ -74,7 +77,46 @@ input[type="text"] {
 }
 
 @media (min-width: 992px) {
-  input[type="text"]{
+  input[type="text"] {
     width: auto;
   }
+}
+
+#ranking-container {
+  background-color: antiquewhite;
+  text-align: center;
+}
+
+/* モーダル */
+/* モーダルを開いた時の外側のレイヤー */
+.over-lay {
+  content: "";
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 150%;
+  background-color: #999;
+  opacity: 0.7;
+  z-index: 9999;
+}
+/* モーダルウィンドウ */
+.modal {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 400px;
+  width: 80%;
+  padding: 30px;
+  background-color: #fff;
+  z-index: 9999;
+}
+
+/* モーダルを開いたとき */
+.modal.active,
+.over-lay.active {
+  display: block;
 }
